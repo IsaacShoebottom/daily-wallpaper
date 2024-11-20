@@ -1,2 +1,4 @@
-downloads
-.idea
+downloads/
+.idea/
+__pycache__/
+*.pyc
