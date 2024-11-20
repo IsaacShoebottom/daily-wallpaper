@@ -1,3 +1,4 @@
+import logging
 import os.path
 import tomlkit
 
@@ -6,20 +7,14 @@ user_path = os.path.expanduser("~/.config/daily-wallpaper/config.toml")
 
 def default_settings():
 	general = tomlkit.table()
-	general.add("interval", 86400)
-	general["interval"].comment("Interval in seconds (24 hours)")
-	general.add("start", 7200)
-	general["start"].comment("Start time in seconds (2:00 AM)")
 	general.add("location", "~/Pictures/Wallpapers")
 	general["location"].comment("Download location")
-	general.add("provider", "bing")
-	general["provider"].comment("Which wallpaper provider to use")
+	general.add("provider", ["bing", "unsplash", "wikimedia"])
+	general["provider"].comment("Which wallpaper provider to use, in order of preference (do no include if you don't want to download the file)")
 	general.add("include_title", True)
 	general.value.item("include_title").comment("Include image title in filename")
 	general.add("set_wallpaper", False)
 	general.value.item("set_wallpaper").comment("Set wallpaper after download")
-	general.add("daemon", False)
-	general.value.item("daemon").comment("Run as daemon (continuously in the background)")
 	general.add("log", False)
 	general.value.item("log").comment("Log to file, located in the download location")
 	general.add("log_level", "INFO")
@@ -29,6 +24,15 @@ def default_settings():
 	general.add("user_agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0")
 	general["user_agent"].comment("User-Agent to use for requests, change to avoid being blocked or to comply with ToS")
 	general.add(tomlkit.nl())
+
+	daemon = tomlkit.table()
+	daemon.add("daemon", False)
+	daemon.value.item("daemon").comment("Run as daemon (continuously in the background)")
+	daemon.add("interval", 86400)
+	daemon["interval"].comment("Interval in seconds (24 hours)")
+	daemon.add("cron", "0 0 * * *")
+	daemon["cron"].comment("Cron expression, overrides interval")
+	daemon.add(tomlkit.nl())
 
 	bing = tomlkit.table()
 	bing.add("size", "UHD")
@@ -56,6 +60,7 @@ def default_settings():
 
 	defaults = tomlkit.document()
 	defaults.add("general", general)
+	defaults.add("daemon", daemon)
 	defaults.add("bing", bing)
 	defaults.add("unsplash", unsplash)
 	defaults.add("wikimedia", wikimedia)
@@ -63,6 +68,17 @@ def default_settings():
 	return defaults
 
 def load_settings():
+	# TODO: Find a better way to do this
+	if os.environ.get("RAPID_DEVELOPMENT") is not None:
+		if os.path.exists(user_path):
+			os.remove(user_path)
+		if os.path.exists(local_path):
+			os.remove(local_path)
+		settings = default_settings()
+		with open(local_path, mode='w') as file:
+			tomlkit.dump(settings, file)
+		return settings
+
 	if os.path.exists(local_path):
 		settings = tomlkit.parse(open(local_path, mode='r').read())
 	elif os.path.exists(user_path):

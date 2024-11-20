@@ -13,7 +13,7 @@ class Unsplash(Provider):
 		super().__init__(settings, session)
 
 	def get_image_info(self):
-		query = "https://unsplash.com/collections/1459961/photo-of-the-day-(archive)"
+		query = f"https://unsplash.com/collections/{self.settings['collection']}"
 		logging.debug(f"Query: {query}")
 
 		response = self.session.get(query).text
