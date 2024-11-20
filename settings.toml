@@ -1,0 +1,9 @@
+[general]
+provider = "wikimedia" # bing, unsplash, wikimedia
+location = "downloads"
+daemon = false
+
+[bing]
+size = "UHD" # UHD, 1920x1080, 1280x720, 640x480
+country = "us"
+market = "en-US"
