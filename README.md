@@ -10,3 +10,12 @@ Unsplash Applications
 
 Wikipedia API Docs
 - https://api.wikimedia.org/wiki/Getting_featured_content_from_Wikipedia_with_Python#Today's_featured_article
+
+# TODO
+- [ ] Add more providers
+- [ ] Deal with existing todos in code
+- [ ] Add more error handling
+- [ ] Make logging to file work
+- [ ] Add tests
+- [ ] Add more documentation
+- [ ] Add auto setting of wallpaper
