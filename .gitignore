@@ -2,3 +2,5 @@ downloads/
 .idea/
 __pycache__/
 *.pyc
+*.pyo
+config.toml

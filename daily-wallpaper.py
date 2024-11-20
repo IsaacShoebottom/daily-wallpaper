@@ -1,54 +1,49 @@
+import datetime
 import os
 import sys
-import tomllib
 import requests
 import importlib
 import logging
+import slugify
+import settings
+
 
 def main():
 	logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+	config = settings.load_settings()
+	logging.debug(f"Config: {config}")
+
 	session = requests.Session()
 	session.headers.update({
-		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0"
+		"User-Agent": config['general']['user_agent']
 	})
 
-	# Load settings from settings.toml
-	settings = tomllib.load(open("settings.toml", mode='b+r'))
-
-	general_settings = settings.get("general")
-
-	download_location = general_settings.get("location")
-	logging.debug(f"Download location: {download_location}")
-
-	provider_name = general_settings.get("provider")
-	logging.debug(f"Provider: {provider_name}")
-
-	provider_settings = settings.get(provider_name)
+	# Convenience variables, could be inlined
+	provider_name = config['general']['provider']
+	provider_settings = config[config['general']['provider']]
+	download_location = os.path.abspath(os.path.expanduser(config['general']['location']))
 
 	# Load the provider module
-	provider = importlib.import_module(f"providers.{provider_name}")
-	logging.debug(f"Provider: {provider}")
+	provider = importlib.import_module(f"providers.{config['general']['provider']}")
 
 	# Create an instance of the provider
-	provider_obj = getattr(provider, provider_name)(provider_settings, session)
-
-	# Get the image URL
-	image_url = provider_obj.get_image_url()
+	provider_obj = getattr(provider, provider_name.title())(provider_settings, session)
+	# Get the image URL and title
+	image_url, image_title = provider_obj.get_image_info()
 	logging.debug(f"Image URL: {image_url}")
 
 	# Download the image
 	image = session.get(image_url).content
 
-	# if its actually text, log it
-	if image.startswith(b"<!DOCTYPE html>"):
-		logging.error("Image is actually HTML")
-		logging.error(image)
-		sys.exit(1)
-
 	if not os.path.exists(download_location):
 		os.mkdir(download_location)
-	with open(f"{download_location}/wallpaper.jpg", "wb") as file:
+	if not os.path.exists(f"{download_location}/{provider_name.title()}"):
+		os.mkdir(f"{download_location}/{provider_name.title()}")
+
+	date = datetime.datetime.now().strftime("%Y-%m-%d")
+	image_title = slugify.slugify(image_title)
+	with open(f"{download_location}/{provider_name.title()}/{date} [{image_title}].jpg", "wb") as file:
 		file.write(image)
 
 if __name__ == "__main__":

@@ -10,5 +10,5 @@ class Provider(ABC):
 		self.session = session
 
 	@abstractmethod
-	def get_image_url(self):
+	def get_image_info(self):
 		pass

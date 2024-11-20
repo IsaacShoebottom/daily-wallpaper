@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.11"
 requests = "^2.32"
 urllib3 = "^1.26"
+python-slugify = "^8.0"
+tomlkit = "^0.13.2"
 
 
 [build-system]
