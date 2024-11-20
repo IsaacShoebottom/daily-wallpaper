@@ -1,9 +1,14 @@
 [tool.poetry]
-name = "daily-wallpaper"
+name = "DailyWallpaper"
 version = "0.1.0"
 description = ""
 authors = ["Isaac Shoebottom <ir.shoebottom@gmail.com>"]
 readme = "README.md"
+packages = [
+	{ include = "providers"},
+	{ include = "settings"},
+	{ include = "app"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -14,8 +19,7 @@ tomlkit = "^0.13.2"
 croniter = "^5.0"
 
 [tool.poetry.scripts]
-daily-wallpaper = "app.daily_wallpaper:__main__"
-
+DailyWallpaper = "app.main:main"
 
 [build-system]
 requires = ["poetry-core"]

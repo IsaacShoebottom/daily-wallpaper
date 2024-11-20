@@ -4,9 +4,9 @@ import requests
 import importlib
 import logging
 import slugify
-import settings
 import time
 import croniter
+from settings import settings
 
 def main():
 	config = settings.load_settings()
