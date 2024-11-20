@@ -13,6 +13,9 @@ python-slugify = "^8.0"
 tomlkit = "^0.13.2"
 croniter = "^5.0"
 
+[tool.poetry.scripts]
+daily-wallpaper = "app.daily_wallpaper:__main__"
+
 
 [build-system]
 requires = ["poetry-core"]

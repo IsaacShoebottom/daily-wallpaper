@@ -1,6 +1,5 @@
 import datetime
 import os
-import sys
 import requests
 import importlib
 import logging
@@ -8,7 +7,6 @@ import slugify
 import settings
 import time
 import croniter
-
 
 def main():
 	config = settings.load_settings()

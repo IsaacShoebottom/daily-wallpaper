@@ -1,9 +1,8 @@
-import logging
 import os.path
 import tomlkit
 
 local_path = os.path.abspath("config.toml")
-user_path = os.path.expanduser("~/.config/daily-wallpaper/config.toml")
+user_path = os.path.expanduser("~/.config/app/config.toml")
 
 def default_settings():
 	general = tomlkit.table()
