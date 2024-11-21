@@ -17,6 +17,7 @@ urllib3 = "^1.26"
 python-slugify = "^8.0"
 tomlkit = "^0.13.2"
 croniter = "^5.0"
+pywin32 = "^308"
 
 [tool.poetry.scripts]
 DailyWallpaper = "app.main:main"

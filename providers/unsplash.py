@@ -25,7 +25,8 @@ class Unsplash(Provider):
 		image_slug = matches.group(1)
 		logging.debug(f"Image slug: {image_slug}")
 
-		image_id = image_slug.split("-")[-1]
+		# Last 11 characters are the image ID
+		image_id = image_slug[-11:]
 		logging.debug(f"Image ID: {image_id}")
 
 		title = image_slug.replace("-", " ").replace(image_id, "").strip().title()

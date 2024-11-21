@@ -15,7 +15,7 @@ Wikipedia API Docs
 - [ ] Add more providers
 - [ ] Deal with existing todos in code
 - [ ] Add more error handling
-- [ ] Make logging to file work
+- [x] Make logging to file work
 - [ ] Add tests
 - [ ] Add more documentation
-- [ ] Add auto setting of wallpaper
+- [x] Add auto setting of wallpaper

@@ -67,17 +67,6 @@ def default_settings():
 	return defaults
 
 def load_settings():
-	# TODO: Find a better way to do this
-	if os.environ.get("RAPID_DEVELOPMENT") is not None:
-		if os.path.exists(user_path):
-			os.remove(user_path)
-		if os.path.exists(local_path):
-			os.remove(local_path)
-		settings = default_settings()
-		with open(local_path, mode='w') as file:
-			tomlkit.dump(settings, file)
-		return settings
-
 	if os.path.exists(local_path):
 		settings = tomlkit.parse(open(local_path, mode='r').read())
 	elif os.path.exists(user_path):
