@@ -22,6 +22,11 @@ pywin32 = "^308"
 [tool.poetry.scripts]
 DailyWallpaper = "app.main:main"
 
+# https://pypi.org/project/poetry-pyinstaller-plugin/
+# https://stackoverflow.com/a/78050613
+[tool.poetry-pyinstaller-plugin.scripts]
+DailyWallpaper = { source = "app/main.py", type = "onedir", bundle = false }
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
